@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: main
-    paths: Packages/com.vrchat.demo-template/**
+    paths: Packages/taremin.copy-components-by-regex/**
 
 env:
-  packageName: "com.vrchat.demo-template"
+  packageName: "taremin.copy-components-by-regex"
 
 jobs:
   build:
@@ -16,7 +16,28 @@ jobs:
     
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Check list
+        run: ls -al Packages/${{env.packageName}}
+
+      - name: Check Package.json
+        run: |
+          cat Packages/${{env.packageName}}/package.json
+
+      - name: Check jq
+        run: |
+          cat Packages/${{env.packageName}}/package.json ./package.json | jq -s 'reduce .[] as $n ({}; . * $n)'
+
+      - name: Merge Package.json
+        run: |
+          echo $(cat Packages/${{env.packageName}}/package.json ./package.json | jq -s 'reduce .[] as $n ({}; . * $n)') > Packages/${{env.packageName}}/package.json
     
+      - name: Check Package.json
+        run: |
+          cat Packages/${{env.packageName}}/package.json
+
       - name: get version
         id: version
         uses: notiz-dev/github-action-json-property@7c8cf5cc36eb85d8d287a8086a39dac59628eb31
