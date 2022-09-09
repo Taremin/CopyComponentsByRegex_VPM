@@ -19,25 +19,10 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Check list
-        run: ls -al Packages/${{env.packageName}}
-
-      - name: Check Package.json
-        run: |
-          cat Packages/${{env.packageName}}/package.json
-
-      - name: Check jq
-        run: |
-          cat Packages/${{env.packageName}}/package.json ./package.json | jq -s 'reduce .[] as $n ({}; . * $n)'
-
       - name: Merge Package.json
         run: |
           echo $(cat Packages/${{env.packageName}}/package.json ./package.json | jq -s 'reduce .[] as $n ({}; . * $n)') > Packages/${{env.packageName}}/package.json
     
-      - name: Check Package.json
-        run: |
-          cat Packages/${{env.packageName}}/package.json
-
       - name: get version
         id: version
         uses: notiz-dev/github-action-json-property@7c8cf5cc36eb85d8d287a8086a39dac59628eb31
