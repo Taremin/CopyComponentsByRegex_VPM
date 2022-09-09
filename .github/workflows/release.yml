@@ -19,6 +19,9 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Check list
+        run: ls -al Packages/${{env.packageName}}
+
       - name: Copy package.json
         run: cp ./package.json Packages/${{env.packageName}}/
     
