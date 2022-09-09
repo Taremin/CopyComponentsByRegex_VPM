@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: main
-    paths: Packages/com.vrchat.demo-template/**
+    paths: Packages/taremin.copy-components-by-regex/**
 
 env:
-  packageName: "com.vrchat.demo-template"
+  packageName: "taremin.copy-components-by-regex"
 
 jobs:
   build:
@@ -16,6 +16,11 @@ jobs:
     
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Copy package.json
+        run: cp ./package.json Packages/${{env.packageName}}/
     
       - name: get version
         id: version
